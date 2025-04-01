@@ -1,9 +1,12 @@
 # vim-writeroom
 
-A Vim plugin that creates a distraction-free writing environment by centering your content in a focused window.
+A Vim plugin that creates a focused centered window for typing.
+
+![screenshot-001](media/screenshot-001.png)
 
 ## Features
 
+- Written in pure vim script
 - Toggle a centered writing area with darkened side panels
 - Customizable width for the writing area
 - Automatically darkens the side panels based on your current colorscheme
