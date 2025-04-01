@@ -25,7 +25,6 @@ endfunction
 
 " get a darker background color
 function! writeroom#get_darker_bg()
-  echo g:writeroom_darken_percent
   let current_bg = synIDattr(hlID('Normal'), 'bg#')
   return s:darken_color(current_bg, g:writeroom_darken_percent)
 endfunction
@@ -37,7 +36,13 @@ endfunction
 " split window at the given positio and set win highlight
 function! s:split_window(position, width)
   execute 'vert' a:position a:width .. 'sview +setlocal\' g:writeroom_params g:writeroom_bufname
-  set winhighlight=Normal:WriteRoomNormal
+
+  if has('nvim')
+    set winhighlight=Normal:WriteRoomNormal
+  else
+    set wincolor=WriteRoomNormal
+  endif
+
   wincmd p
 endfunction
 
