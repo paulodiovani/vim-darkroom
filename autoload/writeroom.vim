@@ -18,29 +18,33 @@ function! writeroom#toggle()
       return
     end
 
-    call writeroom#split_window('topleft', l:width)
-    call writeroom#split_window('botright', l:width)
+    call s:split_window('topleft', l:width)
+    call s:split_window('botright', l:width)
   endif
-endfunction
-
-" split window at the given positio and set win highlight
-function! writeroom#split_window(position, width)
-  execute 'vert' a:position a:width .. 'sview +setlocal\' g:writeroom_params g:writeroom_bufname
-  set winhighlight=Normal:WriteRoomNormal
-  wincmd p
-endfunction
-
-" darken a hex color
-function! writeroom#darken_color(hex, percent)
-  let l:rgb = [str2nr(a:hex[1:2], 16), str2nr(a:hex[3:4], 16), str2nr(a:hex[5:6], 16)]
-  let l:factor = 1 - (a:percent / 100.0)
-  let l:darker_rgb = map(l:rgb, {_, v -> printf('%02x', max([0, float2nr(v * l:factor)]))})
-  return '#' . join(l:darker_rgb, '')
 endfunction
 
 " get a darker background color
 function! writeroom#get_darker_bg()
   echo g:writeroom_darken_percent
   let current_bg = synIDattr(hlID('Normal'), 'bg#')
-  return writeroom#darken_color(current_bg, g:writeroom_darken_percent)
+  return s:darken_color(current_bg, g:writeroom_darken_percent)
+endfunction
+
+"""""""""""""""""""""
+" PRIVATE FUNCTIONS "
+"""""""""""""""""""""
+
+" split window at the given positio and set win highlight
+function! s:split_window(position, width)
+  execute 'vert' a:position a:width .. 'sview +setlocal\' g:writeroom_params g:writeroom_bufname
+  set winhighlight=Normal:WriteRoomNormal
+  wincmd p
+endfunction
+
+" darken a hex color
+function! s:darken_color(hex, percent)
+  let l:rgb = [str2nr(a:hex[1:2], 16), str2nr(a:hex[3:4], 16), str2nr(a:hex[5:6], 16)]
+  let l:factor = 1 - (a:percent / 100.0)
+  let l:darker_rgb = map(l:rgb, {_, v -> printf('%02x', max([0, float2nr(v * l:factor)]))})
+  return '#' . join(l:darker_rgb, '')
 endfunction
