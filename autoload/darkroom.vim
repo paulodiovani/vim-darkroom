@@ -35,8 +35,10 @@ endfunction
 
 function! s:get_windows(nodark = 0)
   if a:nodark
+    " return non-darkroom windows
     return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) != g:darkroom_highlight })
   else
+    " return darkroom windows
     return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) == g:darkroom_highlight })
   endif
 endfunction
