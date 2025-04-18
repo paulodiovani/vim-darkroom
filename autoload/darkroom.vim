@@ -4,10 +4,10 @@
 " toggle darkroom to use a smaller viewport
 function! darkroom#toggle()
   " make only window if darkroom is in use, of there is any vertical split
-  if bufwinnr(g:darkroom_bufname) > 0 || len(filter(range(1, winnr('$')), 'winwidth(v:val) != &columns')) > 0
+  if s:is_active()
     " focus on first non-darkroom window, if needed
     if bufname() == g:darkroom_bufname
-      let l:focus_window = filter(range(1, winnr('$')), 'bufname(winbufnr(v:val)) != g:name')[0]
+      let l:focus_window = s:get_windows(1)[0]
       exec l:focus_window . 'wincmd w'
     endif
     only
@@ -33,17 +33,44 @@ endfunction
 " PRIVATE FUNCTIONS "
 """""""""""""""""""""
 
+function! s:get_windows(nodark = 0)
+  if a:nodark
+    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) != 'DarkRoomNormal' })
+  else
+    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) == 'DarkRoomNormal' })
+  endif
+endfunction
+
+" return true if darkroom windows exist
+function! s:is_active()
+  return len(s:get_windows()) > 0
+endfunction
+
 " split window at the given positio and set win highlight
 function! s:split_window(position, width)
   execute 'vert' a:position a:width .. 'sview +setlocal\' g:darkroom_params g:darkroom_bufname
+  call s:set_window_bg()
+  wincmd p
+endfunction
 
+" get window background highlight
+function! s:get_window_bg(window = winnr())
+  exec a:window . 'wincmd w'
+  if has('nvim')
+    return matchstr(&winhighlight, 'Normal:\zs\w\+\ze')
+  else
+    return &wincolor
+  endif
+  wincmd p
+endfunction
+
+" darken background of current window
+function! s:set_window_bg()
   if has('nvim')
     set winhighlight=Normal:DarkRoomNormal
   else
     set wincolor=DarkRoomNormal
   endif
-
-  wincmd p
 endfunction
 
 " darken a hex color
