@@ -1,19 +1,19 @@
-" Write Room
+" Dark Room
 " creates a center window to focus on text
 
-" toggle writeroom to use a smaller viewport
-function! writeroom#toggle()
-  " make only window if writeroom is in use, of there is any vertical split
-  if bufwinnr(g:writeroom_bufname) > 0 || len(filter(range(1, winnr('$')), 'winwidth(v:val) != &columns')) > 0
-    " focus on first non-writeroom window, if needed
-    if bufname() == g:writeroom_bufname
+" toggle darkroom to use a smaller viewport
+function! darkroom#toggle()
+  " make only window if darkroom is in use, of there is any vertical split
+  if bufwinnr(g:darkroom_bufname) > 0 || len(filter(range(1, winnr('$')), 'winwidth(v:val) != &columns')) > 0
+    " focus on first non-darkroom window, if needed
+    if bufname() == g:darkroom_bufname
       let l:focus_window = filter(range(1, winnr('$')), 'bufname(winbufnr(v:val)) != g:name')[0]
       exec l:focus_window . 'wincmd w'
     endif
     only
   else
-    " or create writeroom windows
-    let l:width = (&columns - g:writeroom_min_columns) / 2
+    " or create darkroom windows
+    let l:width = (&columns - g:darkroom_min_columns) / 2
     if l:width < 0
       return
     end
@@ -24,9 +24,9 @@ function! writeroom#toggle()
 endfunction
 
 " get a darker background color
-function! writeroom#get_darker_bg()
+function! darkroom#get_darker_bg()
   let current_bg = synIDattr(hlID('Normal'), 'bg#')
-  return s:darken_color(current_bg, g:writeroom_darken_percent)
+  return s:darken_color(current_bg, g:darkroom_darken_percent)
 endfunction
 
 """""""""""""""""""""
@@ -35,12 +35,12 @@ endfunction
 
 " split window at the given positio and set win highlight
 function! s:split_window(position, width)
-  execute 'vert' a:position a:width .. 'sview +setlocal\' g:writeroom_params g:writeroom_bufname
+  execute 'vert' a:position a:width .. 'sview +setlocal\' g:darkroom_params g:darkroom_bufname
 
   if has('nvim')
-    set winhighlight=Normal:WriteRoomNormal
+    set winhighlight=Normal:DarkRoomNormal
   else
-    set wincolor=WriteRoomNormal
+    set wincolor=DarkRoomNormal
   endif
 
   wincmd p
