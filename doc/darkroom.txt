@@ -1,0 +1,88 @@
+*darkroom.txt*  A Vim plugin that creates a focused centered window for typing
+
+Author:  Paulo Diovani <https://github.com/paulodiovani>
+License: Same as Vim (see |license|)
+
+==============================================================================
+CONTENTS                                             *darkroom-contents*
+
+    1. Introduction ................................. |darkroom-introduction|
+    2. Usage ........................................ |darkroom-usage|
+    3. Configuration ............................... |darkroom-configuration|
+    4. Commands .................................... |darkroom-commands|
+    5. Mappings .................................... |darkroom-mappings|
+    6. About ....................................... |darkroom-about|
+
+==============================================================================
+1. INTRODUCTION                                     *darkroom-introduction*
+
+DarkRoom is a plugin that creates a focused centered window for typing.
+It darkens the sides of the editor, leaving a clean central area for
+your text.
+
+Features:
+- Written in pure Vim script
+- Toggle a centered writing area with darkened side panels
+- Customizable width for the writing area
+- Automatically darkens the side panels based on your current colorscheme
+- Simple keybinding to toggle the DarkRoom mode
+
+==============================================================================
+2. USAGE                                            *darkroom-usage*
+
+Toggle DarkRoom mode with either:
+- `<Leader><BS>` (default mapping)
+- `:DarkRoomToggle` command
+
+When enabled, DarkRoom creates two darkened side panels and centers your text
+in the middle of the screen. Toggle it again to return to normal editing view.
+
+==============================================================================
+3. CONFIGURATION                                    *darkroom-configuration*
+
+Add the following settings to your `.vimrc` or `init.vim` to customize the
+plugin's behavior. Default values are shown below.
+
+*g:darkroom_bufname*
+    Buffer name used in DarkRoom side windows.
+    Default: '__darkroom__'
+
+*g:darkroom_darken_percent*
+    Percent to darken the background color in side windows (0-100).
+    Default: 25
+
+*g:darkroom_min_columns*
+    Minimum number of columns for the main/center window.
+    Default: 130
+
+*g:darkroom_params*
+    Window parameters for side panels.
+    Default: 'buftype=nofile bufhidden=wipe nomodifiable nobuflisted
+    noswapfile nocursorline nocursorcolumn nonumber norelativenumber
+    noruler nolist noshowmode noshowcmd'
+
+==============================================================================
+4. COMMANDS                                         *darkroom-commands*
+
+*:DarkRoomToggle*
+    Toggle DarkRoom mode on/off.
+
+==============================================================================
+5. MAPPINGS                                         *darkroom-mappings*
+
+<Leader><BS>                                        *<Leader><BS>*
+    Default mapping to toggle DarkRoom mode.
+
+<Plug>DarkRoomToggle                              *<Plug>DarkRoomToggle*
+    Mapping to toggle DarkRoom mode. Can be remapped to a custom key.
+    Example: >
+        nmap <silent> <F8> <Plug>DarkRoomToggle
+<
+
+==============================================================================
+6. ABOUT                                            *darkroom-about*
+
+This plugin is maintained by Paulo Diovani <https://github.com/paulodiovani>.
+Report issues or contribute at https://github.com/paulodiovani/vim-darkroom
+
+ vim:tw=78:ts=8:ft=help:norl:
