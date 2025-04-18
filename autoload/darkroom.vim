@@ -56,23 +56,29 @@ function! s:split_window(position, width)
 endfunction
 
 " get window background highlight
-function! s:get_window_bg(window = winnr())
-  exec a:window . 'wincmd w'
+function! s:get_window_bg(window = -1)
+  if a:window > -1 | exec a:window . 'wincmd w' | endif
+
   if has('nvim')
     return matchstr(&winhighlight, 'Normal:\zs\w\+\ze')
   else
     return &wincolor
   endif
-  wincmd p
+
+  if a:window > -1 | wincmd p | endif
 endfunction
 
-" darken background of current window
-function! s:set_window_bg()
+" darken window background
+function! s:set_window_bg(window = -1)
+  if a:window > -1 | exec a:window . 'wincmd w' | endif
+
   if has('nvim')
     exec 'set winhighlight=Normal:' .. g:darkroom_highlight
   else
     exec 'set wincolor=' .. g:darkroom_highlight
   endif
+
+  if a:window > -1 | exec a:window . 'wincmd w' | endif
 endfunction
 
 " darken a hex color
