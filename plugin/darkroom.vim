@@ -15,6 +15,8 @@ let g:loaded_vim_darkroom = 1
 
 " buffer name used in darkroom sde windows
 let g:darkroom_bufname = get(g:, 'darkroom_bufname', '__darkroom__')
+" highlight group name used by darkroom
+let g:darkroom_highlight = 'DarkRoomNormal'
 " percent to darken the bg color in darkroom side windows (may need to change to match theme)
 let g:darkroom_darken_percent = get(g:, 'darkroom_darken_percent', 25)
 " minimum number of columns for the darkroom main/center window
@@ -23,7 +25,7 @@ let g:darkroom_min_columns = get(g:, 'darkroom_min_columns', 130)
 let g:darkroom_params = get(g:, 'darkroom_params', 'buftype=nofile\ bufhidden=wipe\ nomodifiable\ nobuflisted\ noswapfile\ nocursorline\ nocursorcolumn\ nonumber\ norelativenumber\ noruler\ nolist\ noshowmode\ noshowcmd')
 
 " custom bg color
-exec 'highlight DarkRoomNormal guibg=' .. darkroom#get_darker_bg()
+exec 'highlight' g:darkroom_highlight 'guibg=' .. darkroom#get_darker_bg()
 
 """"""""""""
 " COMMANDS "

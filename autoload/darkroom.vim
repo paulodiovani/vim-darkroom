@@ -35,9 +35,9 @@ endfunction
 
 function! s:get_windows(nodark = 0)
   if a:nodark
-    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) != 'DarkRoomNormal' })
+    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) != g:darkroom_highlight })
   else
-    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) == 'DarkRoomNormal' })
+    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) == g:darkroom_highlight })
   endif
 endfunction
 
@@ -67,9 +67,9 @@ endfunction
 " darken background of current window
 function! s:set_window_bg()
   if has('nvim')
-    set winhighlight=Normal:DarkRoomNormal
+    exec 'set winhighlight=Normal:' .. g:darkroom_highlight
   else
-    set wincolor=DarkRoomNormal
+    exec 'set wincolor=' .. g:darkroom_highlight
   endif
 endfunction
 
