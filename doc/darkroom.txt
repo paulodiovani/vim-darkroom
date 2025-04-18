@@ -1,4 +1,4 @@
-*darkroom.txt*  A Vim plugin that creates a focused centered window for typing
+*darkroom.txt*  A Vim plugin that simulates a dark room by creating darkened side windows
 
 Author:  Paulo Diovani <https://github.com/paulodiovani>
 License: Same as Vim (see |license|)
@@ -16,12 +16,11 @@ CONTENTS                                             *darkroom-contents*
 ==============================================================================
 1. INTRODUCTION                                     *darkroom-introduction*
 
-DarkRoom is a plugin that creates a focused centered window for typing.
-It darkens the sides of the editor, leaving a clean central area for
-your text.
+DarkRoom is a Vim plugin that simulates a dark room by creating darkened side 
+windows, keeping your focus on the centered window.
 
 Features:
-- Written in pure Vim script
+- Written in pure vim script
 - Toggle a centered writing area with darkened side panels
 - Customizable width for the writing area
 - Automatically darkens the side panels based on your current colorscheme

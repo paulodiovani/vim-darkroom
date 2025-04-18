@@ -1,6 +1,6 @@
 # vim-darkroom
 
-A Vim plugin that creates a focused centered window for typing.
+A Vim plugin that simulates a dark room by creating darkened side windows, keeping your focus on the centered window.
 
 ![screenshot-001](media/screenshot-001.png)
 
@@ -32,6 +32,16 @@ Plugin 'paulodiovani/vim-darkroom'
 
 ```lua
 use 'paulodiovani/vim-darkroom'
+```
+
+#### [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```lua
+{
+  'paulodiovani/vim-darkroom',
+  keys = '<Leader><BS>',
+  cmd = 'DarkRoomToggle',
+}
 ```
 
 ### Manual installation
