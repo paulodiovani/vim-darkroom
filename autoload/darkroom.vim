@@ -2,6 +2,8 @@
 " creates a center window to focus on text
 
 " toggle darkroom to use a smaller viewport
+"
+" @return void
 function! darkroom#toggle()
   " make only window if darkroom is in use
   if s:is_active()
@@ -18,6 +20,10 @@ function! darkroom#toggle()
 endfunction
 
 " runs a command on the specified darkroom window
+"
+" @param {string} position - 'topleft' or 'botright' window position
+" @param {string} cmd - vim command to execute in the darkroom window
+" @return void
 function! darkroom#cmd(position, cmd)
   let l:width = s:get_darkroom_width()
 
@@ -41,6 +47,8 @@ function! darkroom#cmd(position, cmd)
 endfunction
 
 " get a darker background color
+"
+" @return {string} - hex color code for darkened background
 function! darkroom#get_darker_bg()
   let current_bg = synIDattr(hlID('Normal'), 'bg#')
   return s:darken_color(current_bg, g:darkroom_darken_percent)
@@ -50,7 +58,9 @@ endfunction
 " PRIVATE FUNCTIONS "
 """""""""""""""""""""
 
-" return true if darkroom layout is active,
+" return true if darkroom layout is active
+"
+" @return {number} - 1 if darkroom is active, 0 otherwise
 function! s:is_active()
   if len(s:get_windows('darkroom')) >= 2
     return 1
@@ -62,11 +72,14 @@ function! s:is_active()
 endfunction
 
 " Return a list of window numbers filtered by type:
-"  'all'         - all windows (default)
-"  'darkroom'    - only windows with darkroom settings applied
-"  'nondarkroom' - only windows without darkroom settings
-"  'vertical'    - only windows in vertical splits
-"  'horizontal'  - only windows in horizontal splits
+"
+" @param {string} type - Filter type:
+"   'all'         - all windows (default)
+"   'darkroom'    - only windows with darkroom settings applied
+"   'nondarkroom' - only windows without darkroom settings
+"   'vertical'    - only windows in vertical splits
+"   'horizontal'  - only windows in horizontal splits
+" @return {list} - List of window numbers matching the filter type
 function! s:get_windows(type = 'all')
   let l:windows = range(1, winnr('$'))
 
@@ -89,12 +102,18 @@ function! s:get_windows(type = 'all')
 endfunction
 
 " check if window is a darkroom window
+"
+" @param {number} window - Window number (0 for current window)
+" @return {number} - 1 if window is a darkroom window, 0 otherwise
 function! s:is_darkroom_window(window = 0)
   let l:buffer = bufname(winbufnr(a:window))
   return match(l:buffer, g:darkroom_bufname) >= 0
 endfunction
 
-" split window at the given positio and set win highlight
+" split window at the given position and set win highlight
+"
+" @param {string} position - 'topleft' or 'botright'
+" @return void
 function! s:split_window(position)
   let l:width = s:get_darkroom_width()
 
@@ -113,7 +132,9 @@ function! s:split_window(position)
   wincmd p
 endfunction
 
-" et darkroom windows width
+" get darkroom windows width
+"
+" @return {number} - Width for darkroom windows in columns
 function s:get_darkroom_width()
   return (&columns - g:darkroom_min_columns) / 2
 endfunction
@@ -137,6 +158,10 @@ function! s:set_window_bg()
 endfunction
 
 " darken a hex color
+"
+" @param {string} hex - Hex color code (format: '#rrggbb')
+" @param {number} percent - Percentage to darken by (0-100)
+" @return {string} - Darkened hex color code
 function! s:darken_color(hex, percent)
   let l:rgb = [str2nr(a:hex[1:2], 16), str2nr(a:hex[3:4], 16), str2nr(a:hex[5:6], 16)]
   let l:factor = 1 - (a:percent / 100.0)
