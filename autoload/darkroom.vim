@@ -3,11 +3,11 @@
 
 " toggle darkroom to use a smaller viewport
 function! darkroom#toggle()
-  " make only window if darkroom is in use, of there is any vertical split
+  " make only window if darkroom is in use
   if s:is_active()
     " focus on first non-darkroom window, if needed
-    if bufname() == g:darkroom_bufname
-      let l:focus_window = s:get_windows(1)[0]
+    if s:is_darkroom_window()
+      let l:focus_window = s:get_windows('nondarkroom')[0]
       exec l:focus_window . 'wincmd w'
     endif
     only
@@ -18,9 +18,29 @@ function! darkroom#toggle()
       return
     end
 
-    call s:split_window('topleft', l:width)
-    call s:split_window('botright', l:width)
+    if winwidth(1) != l:width | call s:split_window('topleft', l:width) | endif
+    if winwidth(winnr('$')) != l:width | call s:split_window('botright', l:width) | endif
   endif
+endfunction
+
+" runs a command on the specified darkroom window
+function! darkroom#cmd(position, cmd)
+  let l:dr_windows = s:get_windows('darkroom')
+
+  if a:position == 'left'
+    let l:dest_window = l:dr_windows[0]
+  else " right
+    let l:dest_window = l:dr_windows[-1]
+  endif
+
+  silent exec l:dest_window . 'wincmd w'
+  try
+    exec a:cmd
+    call s:set_window_bg()
+  catch
+    " return to main window in case of error
+    silent wincmd p
+  endtry
 endfunction
 
 " get a darker background color
@@ -33,52 +53,73 @@ endfunction
 " PRIVATE FUNCTIONS "
 """""""""""""""""""""
 
-function! s:get_windows(nodark = 0)
-  if a:nodark
-    " return non-darkroom windows
-    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) != g:darkroom_highlight })
+" return true if darkroom layout is active,
+function! s:is_active()
+  if len(s:get_windows('darkroom')) >= 2
+    return 1
+  elseif len(s:get_windows('vertical')) >= 3
+    return 1
   else
-    " return darkroom windows
-    return filter(range(1, winnr('$')), {idx, val -> s:get_window_bg(val) == g:darkroom_highlight })
+    return 0
   endif
 endfunction
 
-" return true if darkroom windows exist
-function! s:is_active()
-  return len(s:get_windows()) > 0
+" Return a list of window numbers filtered by type:
+"  'all'         - all windows (default)
+"  'darkroom'    - only windows with darkroom settings applied
+"  'nondarkroom' - only windows without darkroom settings
+"  'vertical'    - only windows in vertical splits
+"  'horizontal'  - only windows in horizontal splits
+function! s:get_windows(type = 'all')
+  let l:windows = range(1, winnr('$'))
+
+  if a:type == 'darkroom'
+    " return darkroom windows
+    return filter(l:windows, {idx, val -> s:is_darkroom_window(val) })
+  elseif a:type == 'nondarkroom'
+    " return non-darkroom windows
+    return filter(l:windows, {idx, val -> !s:is_darkroom_window(val) })
+  elseif a:type == 'vertical'
+    " return vertical split windows
+    return filter(l:windows, {idx, val -> winwidth(val) != &columns })
+  elseif a:type == 'horizontal'
+    " return horizontal split windows
+    return filter(l:windows, {idx, val -> winheight(val) != &lines - &cmdheight - 1 })
+  else " if a:type == 'all'
+    " return all windows
+    return l:windows
+  endif
+endfunction
+
+" check if window is a darkroom window
+function! s:is_darkroom_window(window = 0)
+  let l:buffer = bufname(winbufnr(a:window))
+  return match(l:buffer, g:darkroom_bufname) >= 0
 endfunction
 
 " split window at the given positio and set win highlight
 function! s:split_window(position, width)
-  execute 'vert' a:position a:width .. 'sview +setlocal\' g:darkroom_params g:darkroom_bufname
+  execute 'vert' a:position a:width . 'sview +setlocal\' g:darkroom_params g:darkroom_bufname
   call s:set_window_bg()
   wincmd p
 endfunction
 
 " get window background highlight
-function! s:get_window_bg(window = -1)
-  if a:window > -1 | exec a:window . 'wincmd w' | endif
-
+function! s:get_window_bg()
   if has('nvim')
     return matchstr(&winhighlight, 'Normal:\zs\w\+\ze')
   else
     return &wincolor
   endif
-
-  if a:window > -1 | wincmd p | endif
 endfunction
 
 " darken window background
-function! s:set_window_bg(window = -1)
-  if a:window > -1 | exec a:window . 'wincmd w' | endif
-
+function! s:set_window_bg()
   if has('nvim')
-    exec 'set winhighlight=Normal:' .. g:darkroom_highlight
+    exec 'set winhighlight=Normal:' . g:darkroom_highlight
   else
-    exec 'set wincolor=' .. g:darkroom_highlight
+    exec 'set wincolor=' . g:darkroom_highlight
   endif
-
-  if a:window > -1 | exec a:window . 'wincmd w' | endif
 endfunction
 
 " darken a hex color
