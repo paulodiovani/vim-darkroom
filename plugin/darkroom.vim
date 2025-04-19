@@ -35,8 +35,19 @@ exec 'highlight' g:darkroom_highlight 'guibg=' . darkroom#get_darker_bg()
 " COMMANDS "
 """"""""""""
 
+" toggle darkroom windows
 if !exists(':DarkRoomToggle')
   command! -nargs=0 DarkRoomToggle call darkroom#toggle()
+endif
+
+" run a command on the left darkroom window
+if !exists(':DarkRoomLeft')
+  command! -nargs=+ DarkRoomLeft call darkroom#cmd('topleft', '<args>')
+endif
+
+" run a command on the right darkroom window
+if !exists(':DarkRoomRight')
+  command! -nargs=+ DarkRoomRight call darkroom#cmd('botright', '<args>')
 endif
 
 """"""""""""

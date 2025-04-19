@@ -12,28 +12,25 @@ function! darkroom#toggle()
     endif
     only
   else
-    " or create darkroom windows
-    let l:width = (&columns - g:darkroom_min_columns) / 2
-    if l:width < 0
-      return
-    end
-
-    if winwidth(1) != l:width | call s:split_window('topleft', l:width) | endif
-    if winwidth(winnr('$')) != l:width | call s:split_window('botright', l:width) | endif
+    call s:split_window('topleft')
+    call s:split_window('botright')
   endif
 endfunction
 
 " runs a command on the specified darkroom window
 function! darkroom#cmd(position, cmd)
-  let l:dr_windows = s:get_windows('darkroom')
+  let l:width = s:get_darkroom_width()
 
-  if a:position == 'left'
-    let l:dest_window = l:dr_windows[0]
-  else " right
-    let l:dest_window = l:dr_windows[-1]
+  if a:position == 'topleft'
+    let l:dest_window = 1
+  else " botright
+    let l:dest_window = '$'
   endif
 
-  silent exec l:dest_window . 'wincmd w'
+  " make sure we have a window and move to it
+  call s:split_window(a:position)
+  silent exec l:dest_window 'wincmd w'
+
   try
     exec a:cmd
     call s:set_window_bg()
@@ -98,10 +95,27 @@ function! s:is_darkroom_window(window = 0)
 endfunction
 
 " split window at the given positio and set win highlight
-function! s:split_window(position, width)
-  execute 'vert' a:position a:width . 'sview +setlocal\' g:darkroom_params g:darkroom_bufname
+function! s:split_window(position)
+  let l:width = s:get_darkroom_width()
+
+  if l:width <= 0
+    return
+  endif
+
+  " do not split if already have a left|right window
+  if a:position == 'topleft' && winwidth(1) == l:width ||
+        \ a:position == 'botright' && winwidth(winnr('$')) == l:width
+    return
+  endif
+
+  execute 'vert' a:position l:width . 'sview +setlocal\' g:darkroom_params g:darkroom_bufname
   call s:set_window_bg()
   wincmd p
+endfunction
+
+" et darkroom windows width
+function s:get_darkroom_width()
+  return (&columns - g:darkroom_min_columns) / 2
 endfunction
 
 " get window background highlight
