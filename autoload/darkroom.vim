@@ -13,9 +13,9 @@ function! darkroom#toggle()
       exec l:focus_window . 'wincmd w'
     endif
 
-    " close darkroom windows
+    " close darkroom windows (in reverse bc of win numbers)
     for l:window in reverse(s:get_windows('darkroom'))
-      exec l:window . 'wincmd c'
+      exec l:window 'wincmd c'
     endfor
   else
     if ! s:is_darkroom_window(1) | call s:split_window('topleft') | endif
@@ -27,24 +27,33 @@ endfunction
 "
 " @param {string} position - 'topleft' or 'botright' window position
 " @param {string} cmd - vim command to execute in the darkroom window
+" @param {number} replace - 1 to replace the window with the command output
 " @return void
-function! darkroom#cmd(position, cmd)
+function! darkroom#cmd(position, cmd, replace = 0)
   let l:width = s:get_darkroom_width()
 
   if a:position == 'topleft'
     let l:dest_window = 1
   else " botright
-    let l:dest_window = '$'
+    let l:dest_window = winnr('$')
   endif
 
-  " make sure we have a window and move to it
-  if ! s:is_darkroom_window(l:dest_window) | call s:split_window(a:position) | endif
-  exec l:dest_window 'wincmd w'
-
   try
-    exec a:cmd
+    if a:replace == 1
+      " close darkroom window first, if exists
+      if s:is_darkroom_window(l:dest_window) | exec l:dest_window 'wincmd c' | endif
+      exec 'vert' a:position a:cmd
+      exec 'vert' l:dest_window 'resize' s:get_darkroom_width()
+    else
+      " make sure we have a window and move to it
+      if ! s:is_darkroom_window(l:dest_window) | call s:split_window(a:position) | endif
+      exec l:dest_window 'wincmd w'
+      exec a:cmd
+    endif
+
     call s:set_window_bg()
   catch
+    echoerr v:exception
     " return to main window in case of error
     silent wincmd p
   endtry
