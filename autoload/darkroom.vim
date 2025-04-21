@@ -78,9 +78,6 @@ function! s:is_active()
   if len(s:get_windows('darkroom')) >= 2
     " true if there are 2 darkroom windows
     return 1
-    " true if there are any 3 vertical windows
-  elseif len(s:get_windows('vertical')) >= 3
-    return 1
   else
     return 0
   endif
