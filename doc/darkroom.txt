@@ -88,19 +88,19 @@ DarkRoom is active.
 *:DarkRoomToggle*
     Toggle DarkRoom mode on/off.
 
-*:DarkRoomLeft* {cmd}                                    *:DarkRoomLeft*
+*:DarkRoomLeft* {cmd}
     Run a Vim command in the left darkroom window.
     Example: `:DarkRoomLeft Explore`
 
-*:DarkRoomRight* {cmd}                                   *:DarkRoomRight*
+*:DarkRoomRight* {cmd}
     Run a Vim command in the right darkroom window.
     Example: `:DarkRoomRight help darkroom`
 
-*:DarkRoomReplaceLeft* {cmd}                             *:DarkRoomReplaceLeft*
+*:DarkRoomReplaceLeft* {cmd}
     Replace the left darkroom window with a Vim command.
     Example: `:DarkRoomReplaceLeft terminal`
 
-*:DarkRoomReplaceRight* {cmd}                            *:DarkRoomReplaceRight*
+*:DarkRoomReplaceRight* {cmd}
     Replace the right darkroom window with a Vim command.
     Example: `:DarkRoomReplaceRight Gstatus`
 
