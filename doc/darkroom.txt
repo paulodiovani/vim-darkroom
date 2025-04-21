@@ -22,9 +22,8 @@ windows, keeping your focus on the centered window.
 Features:
 - Written in pure vim script
 - Toggle a centered writing area with darkened side panels
-- Customizable width for the writing area
 - Automatically darkens the side panels based on your current colorscheme
-- Simple keybinding to toggle the DarkRoom mode
+- Run Vim commands in side windows (file explorer, terminal, etc.)
 
 ==============================================================================
 2. USAGE                                            *darkroom-usage*
@@ -36,6 +35,15 @@ Toggle DarkRoom mode with either:
 When enabled, DarkRoom creates two darkened side panels and centers your text
 in the middle of the screen. Toggle it again to return to normal editing view.
 
+You can also run commands in the side panels:
+- `:DarkRoomLeft {cmd}` to run a command in the left panel
+- `:DarkRoomRight {cmd}` to run a command in the right panel
+- `:DarkRoomReplaceLeft {cmd}` to replace left darkroom window with a Vim command
+- `:DarkRoomReplaceRight {cmd}` to replace right darkroom window with a Vim command
+
+This allows you to use the side panels for displaying file explorers, terminals,
+help pages, or any other Vim window while maintaining your focused writing area.
+
 ==============================================================================
 3. CONFIGURATION                                    *darkroom-configuration*
 
@@ -45,6 +53,10 @@ plugin's behavior. Default values are shown below.
 *g:darkroom_bufname*
     Buffer name used in DarkRoom side windows.
     Default: '__darkroom__'
+
+*g:darkroom_highlight*
+    Highlight group name used for darkened side windows.
+    Default: 'DarkRoomNormal'
 
 *g:darkroom_darken_percent*
     Percent to darken the background color in side windows (0-100).
@@ -65,6 +77,22 @@ plugin's behavior. Default values are shown below.
 
 *:DarkRoomToggle*
     Toggle DarkRoom mode on/off.
+
+*:DarkRoomLeft* {cmd}                                    *:DarkRoomLeft*
+    Run a Vim command in the left darkroom window.
+    Example: `:DarkRoomLeft Explore`
+
+*:DarkRoomRight* {cmd}                                   *:DarkRoomRight*
+    Run a Vim command in the right darkroom window.
+    Example: `:DarkRoomRight help darkroom`
+
+*:DarkRoomReplaceLeft* {cmd}                             *:DarkRoomReplaceLeft*
+    Replace the left darkroom window with a Vim command.
+    Example: `:DarkRoomReplaceLeft terminal`
+
+*:DarkRoomReplaceRight* {cmd}                            *:DarkRoomReplaceRight*
+    Replace the right darkroom window with a Vim command.
+    Example: `:DarkRoomReplaceRight Gstatus`
 
 ==============================================================================
 5. MAPPINGS                                         *darkroom-mappings*

@@ -8,9 +8,8 @@ A Vim plugin that simulates a dark room by creating darkened side windows, keepi
 
 - Written in pure vim script
 - Toggle a centered writing area with darkened side panels
-- Customizable width for the writing area
 - Automatically darkens the side panels based on your current colorscheme
-- Simple keybinding to toggle the DarkRoom mode
+- Run Vim commands in side windows (file explorer, terminal, etc.)
 
 ## Installation
 
@@ -62,6 +61,24 @@ Toggle DarkRoom mode with:
 - `<Leader><BS>` (default mapping)
 - `:DarkRoomToggle` command
 
+Execute commands in side panels:
+- `:DarkRoomLeft {cmd}` - Run command in left panel
+- `:DarkRoomRight {cmd}` - Run command in right panel
+- `:DarkRoomReplaceLeft {cmd}` - Replace left darkroom window with a Vim command
+- `:DarkRoomReplaceRight {cmd}` - Replace right darkroom window with a Vim command
+
+Examples:
+```vim
+" Show file explorer in left panel
+:DarkRoomLeft Explore
+
+" Show help in right panel
+:DarkRoomRight help darkroom
+
+" Replace left panel with terminal
+:DarkRoomReplaceLeft terminal
+```
+
 ## Configuration
 
 Add the following settings to your `.vimrc` or `init.vim` to customize the plugin's behavior.
@@ -70,6 +87,9 @@ Default values are shown below.
 ```vim
 " Buffer name used in DarkRoom side windows
 let g:darkroom_bufname = '__darkroom__'
+
+" Highlight group name for darkroom windows
+let g:darkroom_highlight = 'DarkRoomNormal'
 
 " Percent to darken the background color in side windows (0-100)
 let g:darkroom_darken_percent = 25
