@@ -50,6 +50,16 @@ if !exists(':DarkRoomRight')
   command! -nargs=+ DarkRoomRight call darkroom#cmd('botright', '<args>')
 endif
 
+" run a command replacing the left darkroom window
+if !exists(':DarkRoomReplaceLeft')
+  command! -nargs=+ DarkRoomReplaceLeft call darkroom#cmd('topleft', '<args>', 1)
+endif
+
+" run a command replacing the right darkroom window
+if !exists(':DarkRoomReplaceRight')
+  command! -nargs=+ DarkRoomReplaceRight call darkroom#cmd('botright', '<args>', 1)
+endif
+
 """"""""""""
 " MAPPINGS "
 """"""""""""
