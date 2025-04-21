@@ -72,6 +72,16 @@ plugin's behavior. Default values are shown below.
     noswapfile nocursorline nocursorcolumn nonumber norelativenumber
     noruler nolist noshowmode noshowcmd'
 
+3.1 RECOMMENDED VIM SETTINGS                       *darkroom-recommended-settings*
+
+For optimal DarkRoom behavior, it's recommended to disable the 'equalalways'
+option in your Vim configuration:
+>
+    set noequalalways  " or set noea
+<
+This prevents Vim from automatically equalizing window sizes when
+DarkRoom is active.
+
 ==============================================================================
 4. COMMANDS                                         *darkroom-commands*
 

@@ -100,3 +100,13 @@ let g:darkroom_min_columns = 130
 " Window parameters for side panels
 let g:darkroom_params = 'buftype=nofile bufhidden=wipe nomodifiable nobuflisted noswapfile nocursorline nocursorcolumn nonumber norelativenumber noruler nolist noshowmode noshowcmd'
 ```
+
+### Recommended Vim Settings
+
+For optimal DarkRoom behavior, it's recommended to disable 'equalalways' option in your Vim configuration:
+
+```vim
+set noequalalways  " or set noea
+```
+
+This prevents Vim from automatically equalizing window sizes when DarkRoom is active.
