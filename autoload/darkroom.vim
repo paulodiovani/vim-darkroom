@@ -12,7 +12,11 @@ function! darkroom#toggle()
       let l:focus_window = s:get_windows('nondarkroom')[0]
       exec l:focus_window . 'wincmd w'
     endif
-    only
+
+    " close darkroom windows
+    for l:window in reverse(s:get_windows('darkroom'))
+      exec l:window . 'wincmd c'
+    endfor
   else
     call s:split_window('topleft')
     call s:split_window('botright')
@@ -63,7 +67,9 @@ endfunction
 " @return {number} - 1 if darkroom is active, 0 otherwise
 function! s:is_active()
   if len(s:get_windows('darkroom')) >= 2
+    " true if there are 2 darkroom windows
     return 1
+    " true if there are any 3 vertical windows
   elseif len(s:get_windows('vertical')) >= 3
     return 1
   else
@@ -107,7 +113,9 @@ endfunction
 " @return {number} - 1 if window is a darkroom window, 0 otherwise
 function! s:is_darkroom_window(window = 0)
   let l:buffer = bufname(winbufnr(a:window))
+
   return match(l:buffer, g:darkroom_bufname) >= 0
+        \ || winwidth(a:window) == s:get_darkroom_width()
 endfunction
 
 " split window at the given position and set win highlight

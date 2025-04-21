@@ -19,7 +19,7 @@ let g:darkroom_bufname = get(g:, 'darkroom_bufname', '__darkroom__')
 let g:darkroom_highlight = get(g:, 'darkroom_highlight', 'DarkRoomNormal')
 " percent to darken the bg color in darkroom side windows (may need to change to match theme)
 let g:darkroom_darken_percent = get(g:, 'darkroom_darken_percent', 25)
-" minimum number of columns for the darkroom main/center window
+" minimum number of columns for the main/center window
 let g:darkroom_min_columns = get(g:, 'darkroom_min_columns', 130)
 " window params used when creating darkroom windows
 let g:darkroom_params = get(g:, 'darkroom_params', 'buftype=nofile\ bufhidden=wipe\ nomodifiable\ nobuflisted\ noswapfile\ nocursorline\ nocursorcolumn\ nonumber\ norelativenumber\ noruler\ nolist\ noshowmode\ noshowcmd')
