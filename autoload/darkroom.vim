@@ -150,15 +150,6 @@ function s:get_darkroom_width()
   return (&columns - g:darkroom_min_columns) / 2
 endfunction
 
-" get window background highlight
-function! s:get_window_bg()
-  if has('nvim')
-    return matchstr(&winhighlight, 'Normal:\zs\w\+\ze')
-  else
-    return &wincolor
-  endif
-endfunction
-
 " darken window background
 function! s:set_window_bg()
   if has('nvim')
