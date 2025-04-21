@@ -27,7 +27,7 @@ endfunction
 "
 " @param {string} position - 'topleft' or 'botright' window position
 " @param {string} cmd - vim command to execute in the darkroom window
-" @param {number} replace - 1 to replace the window with the command output
+" @param {number} replace - 1 to replace the window with the Vim command
 " @return void
 function! darkroom#cmd(position, cmd, replace = 0)
   let l:width = s:get_darkroom_width()
