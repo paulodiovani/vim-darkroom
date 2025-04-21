@@ -18,8 +18,8 @@ function! darkroom#toggle()
       exec l:window . 'wincmd c'
     endfor
   else
-    call s:split_window('topleft')
-    call s:split_window('botright')
+    if ! s:is_darkroom_window(1) | call s:split_window('topleft') | endif
+    if ! s:is_darkroom_window(winnr('$')) | call s:split_window('botright') | endif
   endif
 endfunction
 
@@ -38,8 +38,8 @@ function! darkroom#cmd(position, cmd)
   endif
 
   " make sure we have a window and move to it
-  call s:split_window(a:position)
-  silent exec l:dest_window 'wincmd w'
+  if ! s:is_darkroom_window(l:dest_window) | call s:split_window(a:position) | endif
+  exec l:dest_window 'wincmd w'
 
   try
     exec a:cmd
@@ -126,12 +126,6 @@ function! s:split_window(position)
   let l:width = s:get_darkroom_width()
 
   if l:width <= 0
-    return
-  endif
-
-  " do not split if already have a left|right window
-  if a:position == 'topleft' && winwidth(1) == l:width ||
-        \ a:position == 'botright' && winwidth(winnr('$')) == l:width
     return
   endif
 
