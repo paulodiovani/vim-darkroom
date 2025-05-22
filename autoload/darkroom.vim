@@ -31,18 +31,15 @@ endfunction
 " @return void
 function! darkroom#cmd(position, cmd, replace = 0)
   let l:width = s:get_darkroom_width()
-
-  if a:position == 'topleft'
-    let l:dest_window = 1
-  else " botright
-    let l:dest_window = winnr('$')
-  endif
+  let l:dest_window = s:get_dest_window(a:position)
 
   try
     if a:replace == 1
       " close darkroom window first, if exists
       if s:is_darkroom_window(l:dest_window) | exec l:dest_window 'wincmd c' | endif
       exec 'vert' a:position a:cmd
+      " must refresh winnr because windows may have changed
+      let l:dest_window = s:get_dest_window(a:position)
       exec 'vert' l:dest_window 'resize' s:get_darkroom_width()
     else
       " make sure we have a window and move to it
@@ -70,6 +67,14 @@ endfunction
 """""""""""""""""""""
 " PRIVATE FUNCTIONS "
 """""""""""""""""""""
+
+function s:get_dest_window(position)
+  if a:position == 'topleft'
+    return 1
+  else " botright
+    return winnr('$')
+  endif
+endfunction
 
 " return true if darkroom layout is active
 "
