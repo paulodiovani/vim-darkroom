@@ -42,22 +42,22 @@ endif
 
 " run a command on the left darkroom window
 if !exists(':DarkRoomLeft')
-  command! -nargs=+ DarkRoomLeft call darkroom#cmd('topleft', '<args>')
+  command! -range -nargs=+ DarkRoomLeft call darkroom#cmd('topleft', '<args>')
 endif
 
 " run a command on the right darkroom window
 if !exists(':DarkRoomRight')
-  command! -nargs=+ DarkRoomRight call darkroom#cmd('botright', '<args>')
+  command! -range -nargs=+ DarkRoomRight call darkroom#cmd('botright', '<args>')
 endif
 
 " replace the left darkroom window with a Vim command
 if !exists(':DarkRoomReplaceLeft')
-  command! -nargs=+ DarkRoomReplaceLeft call darkroom#cmd('topleft', '<args>', 1)
+  command! -range -nargs=+ DarkRoomReplaceLeft call darkroom#cmd('topleft', '<args>', 1)
 endif
 
 " replace the right darkroom window with a Vim command
 if !exists(':DarkRoomReplaceRight')
-  command! -nargs=+ DarkRoomReplaceRight call darkroom#cmd('botright', '<args>', 1)
+  command! -range -nargs=+ DarkRoomReplaceRight call darkroom#cmd('botright', '<args>', 1)
 endif
 
 """"""""""""

@@ -29,15 +29,23 @@ endfunction
 " @param {string} cmd - vim command to execute in the darkroom window
 " @param {number} replace - 1 to replace the window with the Vim command
 " @return void
-function! darkroom#cmd(position, cmd, replace = 0)
+function! darkroom#cmd(position, cmd, replace = 0) range
   let l:width = s:get_darkroom_width()
   let l:dest_window = s:get_dest_window(a:position)
+
+  let l:range = ""
+  let l:m = mode() " editor mode
+
+  " include range, if in visual mode
+  if (l:m ==# 'v' || l:m ==# 'V' || l:m ==# "\<C-V>")
+    let l:range = a:firstline . ',' . a:lastline
+  endif
 
   try
     if a:replace == 1
       " close darkroom window first, if exists
       if s:is_darkroom_window(l:dest_window) | exec l:dest_window 'wincmd c' | endif
-      exec 'vert' a:position a:cmd
+      exec 'vert' a:position l:range . a:cmd
       " must refresh winnr because windows may have changed
       let l:dest_window = s:get_dest_window(a:position)
       exec 'vert' l:dest_window 'resize' s:get_darkroom_width()
@@ -45,7 +53,7 @@ function! darkroom#cmd(position, cmd, replace = 0)
       " make sure we have a window and move to it
       if ! s:is_darkroom_window(l:dest_window) | call s:split_window(a:position) | endif
       exec l:dest_window 'wincmd w'
-      exec a:cmd
+      exec l:range . a:cmd
     endif
 
     call s:set_window_bg()
