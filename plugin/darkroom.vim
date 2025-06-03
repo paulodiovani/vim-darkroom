@@ -22,7 +22,7 @@ let g:darkroom_darken_percent = get(g:, 'darkroom_darken_percent', 25)
 " minimum number of columns for the main/center window
 let g:darkroom_min_columns = get(g:, 'darkroom_min_columns', 130)
 " window params used when creating darkroom windows
-let g:darkroom_params = get(g:, 'darkroom_params', 'buftype=nofile\ bufhidden=wipe\ nomodifiable\ nobuflisted\ noswapfile\ nocursorline\ nocursorcolumn\ nonumber\ norelativenumber\ noruler\ nolist\ noshowmode\ noshowcmd')
+let g:darkroom_params = get(g:, 'darkroom_params', 'buftype=nofile\ filetype=darkroom\ bufhidden=wipe\ nomodifiable\ nobuflisted\ noswapfile\ nocursorline\ nocursorcolumn\ nonumber\ norelativenumber\ noruler\ nolist\ noshowmode\ noshowcmd')
 
 """""""""""""""
 " PLUGIN INIT "
